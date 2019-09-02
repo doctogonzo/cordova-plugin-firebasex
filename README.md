@@ -1,7 +1,7 @@
 cordova-plugin-firebasex [![Latest Stable Version](https://img.shields.io/npm/v/cordova-plugin-firebasex.svg)](https://www.npmjs.com/package/cordova-plugin-firebasex) [![Total Downloads](https://img.shields.io/npm/dt/cordova-plugin-firebasex.svg)](https://npm-stat.com/charts.html?package=cordova-plugin-firebasex)
 ========================
 
-This plugin is a fork of [cordova-plugin-firebase](https://github.com/arnesson/cordova-plugin-firebase) which has been rework to fix issues and add new functionality.
+This plugin is a fork of [cordova-plugin-firebasex](https://github.com/arnesson/cordova-plugin-firebasex) which has been rework to add Dynamic links to it.
 
 It brings push notifications, analytics, event tracking, crash reporting and more from Google Firebase to your Cordova project.
 
@@ -119,6 +119,9 @@ or by running:
 ```
 cordova plugin add cordova-plugin-firebasex
 ```
+Use variable `APP_DOMAIN` specify web URL where your app will start an activity to handle the link.
+
+Use variable `PAGE_LINK_DOMAIN` specify your `*.page.link` domain.
 
 ### Supported Cordova Versions
 - cordova: `>= 9`
@@ -219,6 +222,7 @@ The following plugin variables are use to specify the follow Gradle dependency v
 - `ANDROID_FIREBASE_CONFIG_VERSION` => `com.google.firebase:firebase-config`
 - `ANDROID_FIREBASE_PERF_VERSION` => `com.google.firebase:firebase-perf`
 - `ANDROID_FIREBASE_AUTH_VERSION` => `com.google.firebase:firebase-auth`
+- `ANDROID_FIREBASE_DYNAMIC_LINKS_VERSION` => `com.google.firebase:firebase-dynamic-links`
 - `ANDROID_CRASHLYTICS_VERSION` => `com.crashlytics.sdk.android:crashlytics`
 - `ANDROID_CRASHLYTICS_NDK_VERSION` => `com.crashlytics.sdk.android:crashlytics-ndk`
 - `ANDROID_SHORTCUTBADGER_VERSION` => `me.leolin:ShortcutBadger`
@@ -230,6 +234,7 @@ The following plugin variables are use to specify the follow Cocoapods dependenc
 - `IOS_FIREBASE_MESSAGING_VERSION` => `Firebase/Messaging`
 - `IOS_FIREBASE_PERFORMANCE_VERSION` => `Firebase/Performance`
 - `IOS_FIREBASE_REMOTECONFIG_VERSION` => `Firebase/RemoteConfig`
+- `IOS_FIREBASE_DYNAMIC_LINKS_VERSION` => `Firebase/DynamicLinks`
 - `IOS_FABRIC_VERSION` => `Fabric`
 - `IOS_CRASHLYTICS_VERSION` => `Crashlytics`
 

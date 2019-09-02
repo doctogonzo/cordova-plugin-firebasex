@@ -15,15 +15,25 @@
 		<engine name="cordova-ios" version=">=5" />
 	</engines>
 
+	<preference name="APP_DOMAIN" />
+    <preference name="PAGE_LINK_DOMAIN" />
+
 	<platform name="android">
 		<js-module name="FirebasePlugin" src="www/firebase.js">
 			<clobbers target="FirebasePlugin" />
 		</js-module>
+		<js-module name="FirebaseDynamicLinks" src="www/FirebaseDynamicLinks.js">
+        	<clobbers target="FirebaseDynamicLinks" />
+   		</js-module>
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="FirebasePlugin">
 				<param name="android-package" value="org.apache.cordova.firebase.FirebasePlugin" />
 				<param name="onload" value="true" />
 			</feature>
+			<preference name="DYNAMIC_LINK_URIPREFIX" value="https://$PAGE_LINK_DOMAIN"/>
+            <feature name="FirebaseDynamicLinks">
+                <param name="android-package" value="org.apache.cordova.firebase.FirebaseDynamicLinksPlugin" />
+            </feature>
 		</config-file>
 		<config-file target="AndroidManifest.xml" parent="/*">
 			<uses-permission android:name="android.permission.INTERNET" />
@@ -41,6 +51,22 @@
 			<meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/accent" />
 			<meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="@string/default_notification_channel_id"/>
 		</config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="$APP_DOMAIN" android:scheme="http"/>
+                <data android:host="$APP_DOMAIN" android:scheme="https"/>
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="$PAGE_LINK_DOMAIN" android:scheme="http"/>
+                <data android:host="$PAGE_LINK_DOMAIN" android:scheme="https"/>
+            </intent-filter>
+        </config-file>
 		<resource-file src="src/android/cordova-plugin-firebase-strings.xml" target="res/values/cordova-plugin-firebase-strings.xml" />
 		<source-file src="src/android/FirebasePlugin.java" target-dir="src/org/apache/cordova/firebase" />
 		<source-file src="src/android/OnNotificationOpenReceiver.java" target-dir="src/org/apache/cordova/firebase" />
@@ -48,6 +74,7 @@
 		<source-file src="src/android/FirebasePluginMessageReceiver.java" target-dir="src/org/apache/cordova/firebase" />
 		<source-file src="src/android/FirebasePluginMessageReceiverManager.java" target-dir="src/org/apache/cordova/firebase" />
 		<source-file src="src/android/JavaScriptException.java" target-dir="src/org/apache/cordova/firebase"/>
+		<source-file src="src/android/FirebaseDynamicLinksPlugin.java" target-dir="src/org/apache/cordova/firebase"/>
 
 		<source-file src="src/android/colors.xml" target-dir="res/values" />
 		<preference name="ANDROID_ICON_ACCENT" default="#FF00FFFF" />
@@ -67,6 +94,7 @@
 		<preference name="ANDROID_CRASHLYTICS_VERSION" default="2.10.1" />
 		<preference name="ANDROID_CRASHLYTICS_NDK_VERSION" default="2.1.0" />
 		<preference name="ANDROID_SHORTCUTBADGER_VERSION" default="1.1.22" />
+        <preference name="ANDROID_FIREBASE_DYNAMIC_LINKS_VERSION" default="18.0.+"/>
 
 		<framework src="com.google.android.gms:play-services-tagmanager:$ANDROID_PLAY_SERVICES_TAGMANAGER_VERSION" />
 		<framework src="com.google.firebase:firebase-core:$ANDROID_FIREBASE_CORE_VERSION" />
@@ -77,6 +105,7 @@
 		<framework src="com.crashlytics.sdk.android:crashlytics:$ANDROID_CRASHLYTICS_VERSION" />
 		<framework src="com.crashlytics.sdk.android:crashlytics-ndk:$ANDROID_CRASHLYTICS_NDK_VERSION" />
 		<framework src="me.leolin:ShortcutBadger:$ANDROID_SHORTCUTBADGER_VERSION" />
+        <framework src="com.google.firebase:firebase-dynamic-links:$ANDROID_FIREBASE_DYNAMIC_LINKS_VERSION" />
 
 	</platform>
 
@@ -87,11 +116,18 @@
 		<js-module name="FirebasePlugin" src="www/firebase.js">
 			<clobbers target="FirebasePlugin" />
 		</js-module>
+		<js-module name="FirebaseDynamicLinks" src="www/FirebaseDynamicLinks.js">
+        	<clobbers target="FirebaseDynamicLinks" />
+   		</js-module>
 		<config-file parent="/*" target="config.xml">
 			<feature name="FirebasePlugin">
 				<param name="ios-package" value="FirebasePlugin" />
 				<param name="onload" value="true" />
 			</feature>
+			<preference name="DYNAMIC_LINK_URIPREFIX" value="https://$PAGE_LINK_DOMAIN"/>
+            <feature name="FirebaseDynamicLinks">
+                <param name="ios-package" value="FirebaseDynamicLinksPlugin" />
+            </feature>
 		</config-file>
 		<config-file parent="aps-environment" target="*/Entitlements-Debug.plist">
 			<string>development</string>
@@ -104,6 +140,34 @@
 				<string>remote-notification</string>
 			</array>
 		</config-file>
+		<config-file target="*-Info.plist" parent="CFBundleURLTypes">
+            <array>
+                <dict>
+                    <key>CFBundleTypeRole</key>
+                    <string>Editor</string>
+                    <key>CFBundleURLName</key>
+                    <string>BUNDLE_ID</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>$PACKAGE_NAME</string>
+                    </array>
+                </dict>
+            </array>
+        </config-file>
+
+        <config-file target="*-Debug.plist" parent="com.apple.developer.associated-domains">
+            <array>
+                <string>applinks:$APP_DOMAIN</string>
+                <string>applinks:$PAGE_LINK_DOMAIN</string>
+            </array>
+        </config-file>
+
+        <config-file target="*-Release.plist" parent="com.apple.developer.associated-domains">
+            <array>
+                <string>applinks:$APP_DOMAIN</string>
+                <string>applinks:$PAGE_LINK_DOMAIN</string>
+            </array>
+        </config-file>
 
 		<resource-file src="src/ios/GoogleService-Info.plist" />
 
@@ -111,6 +175,10 @@
 		<source-file src="src/ios/AppDelegate+FirebasePlugin.m" />
 		<header-file src="src/ios/FirebasePlugin.h" />
 		<source-file src="src/ios/FirebasePlugin.m" />
+		<header-file src="src/ios/AppDelegate+FirebaseDynamicLinksPlugin.h" />
+		<source-file src="src/ios/AppDelegate+FirebaseDynamicLinksPlugin.m" />
+        <header-file src="src/ios/FirebaseDynamicLinksPlugin.h" />
+        <source-file src="src/ios/FirebaseDynamicLinksPlugin.m" />
 
 		<podspec>
 			<config>
@@ -122,6 +190,7 @@
 				<pod name="Firebase/Messaging" spec="6.3.0"/>
 				<pod name="Firebase/Performance" spec="6.3.0"/>
 				<pod name="Firebase/RemoteConfig" spec="6.3.0"/>
+				<pod name="Firebase/DynamicLinks" spec="6.3.0"/>
 				<pod name="Fabric" spec="1.9.0"/>
 				<pod name="Crashlytics" spec="3.12.0"/>
 			</pods>
