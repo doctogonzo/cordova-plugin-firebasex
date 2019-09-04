@@ -16,7 +16,7 @@ exports.getAPNSToken = function (success, error) {
   exec(success, error, "FirebasePlugin", "getAPNSToken", []);
 };
 
-exports.onMessageReceived = function (success, error) {
+exports.onNotificationOpen = function (success, error) {
   exec(success, error, "FirebasePlugin", "onMessageReceived", []);
 };
 

@@ -150,7 +150,7 @@ You should be aware of the following breaking changes compared with `cordova-plu
 * Migrated to AndroidX from legacy Android Support Library
     * add dependency on [cordova-plugin-androidx](https://github.com/dpa99c/cordova-plugin-androidx) and [cordova-plugin-androidx-adapter](https://github.com/dpa99c/cordova-plugin-androidx-adapter)
 * Migrated to Cocoapods to satisfy Firebase SDK dependencies on iOS
-* `onNotificationOpen()` renamed to `onMessageReceived()`
+* `onNotificationOpen()`
     * `tap` parameter is only set when user taps on a notification (not when a message is received from FCM)
     * `tap=foreground|background` instead of `tap=true|false`
 * `hasPermission()` receives argument as a boolean (rather than an object with `isEnabled` key)
