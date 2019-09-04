@@ -138,12 +138,6 @@
                 <param name="ios-package" value="FirebaseDynamicLinksPlugin" />
             </feature>
 		</config-file>
-		<config-file parent="aps-environment" target="*/Entitlements-Debug.plist">
-			<string>development</string>
-		</config-file>
-		<config-file parent="aps-environment" target="*/Entitlements-Release.plist">
-			<string>production</string>
-		</config-file>
 		<config-file target="*-Info.plist" parent="UIBackgroundModes">
 			<array>
 				<string>remote-notification</string>
@@ -170,13 +164,19 @@
                 <string>applinks:$PAGE_LINK_DOMAIN</string>
             </array>
         </config-file>
-
+		<config-file parent="aps-environment" target="*-Debug.plist">
+			<string>development</string>
+		</config-file>
+		
         <config-file target="*-Release.plist" parent="com.apple.developer.associated-domains">
             <array>
                 <string>applinks:$APP_DOMAIN</string>
                 <string>applinks:$PAGE_LINK_DOMAIN</string>
             </array>
         </config-file>
+		<config-file parent="aps-environment" target="*-Release.plist">
+			<string>production</string>
+		</config-file>
 
 		<resource-file src="src/ios/GoogleService-Info.plist" />
 

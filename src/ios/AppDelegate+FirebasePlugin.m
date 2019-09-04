@@ -147,9 +147,6 @@
         if([aps objectForKey:@"alert"] != nil){
             [mutableUserInfo setValue:@"notification" forKey:@"messageType"];
             NSString* tap;
-            if([self.applicationInBackground isEqual:[NSNumber numberWithBool:YES]]){
-                tap = @"background";
-            }
             [mutableUserInfo setValue:tap forKey:@"tap"];
         }else{
             [mutableUserInfo setValue:@"data" forKey:@"messageType"];
